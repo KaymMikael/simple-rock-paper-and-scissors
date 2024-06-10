@@ -1,4 +1,4 @@
-const score = {
+const score = JSON.parse(localStorage.getItem("gameScore")) || {
   wins: 0,
   losses: 0,
   ties: 0,
@@ -24,37 +24,40 @@ function playGame(playerChoice) {
   if (playerChoice === "Rock") {
     if (computerMove === "Rock") {
       result = "Tie.";
-      score.ties += 1;
     } else if (computerMove === "Paper") {
       result = "You lose.";
-      score.losses += 1;
     } else if (computerMove === "Scissors") {
       result = "You win.";
-      score.wins += 1;
     }
   } else if (playerChoice === "Paper") {
     if (computerMove === "Rock") {
       result = "You win.";
-      score.wins += 1;
     } else if (computerMove === "Paper") {
       result = "Tie.";
-      score.ties += 1;
     } else if (computerMove === "Scissors") {
       result = "You lose.";
-      score.losses += 1;
     }
   } else if (playerChoice === "Scissors") {
     if (computerMove === "Rock") {
       result = "You lose.";
-      score.losses += 1;
     } else if (computerMove === "Paper") {
       result = "You win.";
-      score.wins += 1;
     } else if (computerMove === "Scissors") {
       result = "Tie.";
-      score.ties += 1;
     }
   }
+
+  if (result === "You win.") {
+    score.wins += 1;
+  } else if (result === "You lose.") {
+    score.losses += 1;
+  } else if (result === "Tie.") {
+    score.ties += 1;
+  }
+
+  const scoreString = JSON.stringify(score);
+  localStorage.setItem("gameScore", scoreString);
+
   alert(`You choose ${playerChoice}. Computer choose ${computerMove}. ${result}
 Wins: ${score.wins}. Losses: ${score.losses}. Ties ${score.ties}`);
 }
@@ -63,5 +66,6 @@ function resetScore() {
   score.wins = 0;
   score.losses = 0;
   score.ties = 0;
-  alert('Score has been reset')
+  localStorage.removeItem('gameScore');
+  alert("Score has been reset");
 }
