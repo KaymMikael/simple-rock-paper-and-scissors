@@ -84,3 +84,21 @@ function resetScore() {
   localStorage.removeItem("gameScore");
   updateScoreElement();
 }
+
+let isPlaying = false;
+let intervalId;
+
+function autoPlay() {
+  if (!isPlaying) {
+    isPlaying = true;
+    document.querySelector(".js-button-auto-play").innerHTML = "Stop play";
+    intervalId = setInterval(() => {
+      const playerChoice = pickComputerMove();
+      playGame(playerChoice);
+    }, 1000);
+  } else {
+    isPlaying = true;
+    clearInterval(intervalId);
+    document.querySelector(".js-button-auto-play").innerHTML = "Auto play";
+  }
+}
